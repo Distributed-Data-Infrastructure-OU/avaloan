@@ -5,75 +5,22 @@ import App from './App'
 import router from './router'
 import Vue2Filters from 'vue2-filters'
 import AsyncComputed from 'vue-async-computed'
+import store from './store';
+import pricesMixin from './mixins/prices';
+import setupFilters from './utils/filters';
 
-const CoinGecko = require('coingecko-api');
-const CoinGeckoClient = new CoinGecko();
-
-Vue.use(Vue2Filters)
-Vue.config.productionTip = false
-Vue.use(AsyncComputed)
-
-
-window.addEventListener('load', function () {
-  /* eslint-disable no-new */
-  new Vue({
-    el: '#app',
-    router,
-    template: '<App/>',
-    components: {App}
-  })
-})
-
-async function getAvaxPrice() {
-  let response = await CoinGeckoClient.simple.price({
-    ids: 'avalanche-2',
-    vs_currencies: "usd"
-  });
-  return response.data['avalanche-2'].usd;
-}
-
-async function setupFilters() {
-  let avaxPrice = await getAvaxPrice();
-  console.log("Current avax price: " + avaxPrice);
-
-  Vue.filter('usd', function (value) {
-    if (!value) return '$0';
-    let usd = value * avaxPrice;
-    return "$" + usd.toFixed(2);
-  });
-
-  Vue.filter('usd-precise', function (value) {
-    if (!value) return '$0'
-    return "$" + value.toFixed(12);
-  });
-
-  Vue.filter('avax', function (value) {
-    if (!value) return '0'
-    return value.toFixed(2) + ' AVAX';
-  });
-
-  Vue.filter('full', function (value) {
-    if (!value) return '';
-    let usd = value * avaxPrice;
-    return value.toFixed(2) + ' AVAX ($' + usd.toFixed(2) + ')';
-  });
-
-  Vue.filter('units', function (value) {
-    if (!value) return '0';
-    return value.toFixed(3);
-  });
-
-  Vue.filter('percent', function (value) {
-    if (!value) return '0%';
-    return (value * 100).toFixed(2) + "%";
-  });
-
-  Vue.filter('tx', function (value) {
-    if (!value) return '';
-    return value.substr(0, 6) + "..." + value.substr(value.length - 4);
-  })
-
-};
+Vue.use(Vue2Filters);
+Vue.config.productionTip = false;
+Vue.use(AsyncComputed);
+Vue.mixin(pricesMixin);
 
 setupFilters();
 
+/* eslint-disable no-new */
+new Vue({
+  el: '#app',
+  store,
+  router,
+  template: '<App/>',
+  components: {App}
+})

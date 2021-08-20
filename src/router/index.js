@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Deposit from '@/pages/Deposit'
-import Borrow from '@/pages/Borrow'
+import Invest from '@/pages/Invest'
 import Dashboard from '@/pages/Dashboard'
 
 
@@ -16,9 +16,9 @@ export default new Router({
       component: Deposit
     },
     {
-      path: '/borrow',
-      name: 'Borrow',
-      component: Borrow
+      path: '/invest',
+      name: 'Invest',
+      component: Invest
     },
     {
       path: '/dashboard',
@@ -27,7 +27,7 @@ export default new Router({
     },
     {
       path: '*',
-      redirect: { name: 'Dashboard' }
+      redirect: { name: 'Deposit' }
     },
   ]
 })

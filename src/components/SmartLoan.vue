@@ -1,15 +1,20 @@
 <template>
-
+  <div>
+  </div>
 </template>
 
 
 <script>
   export default {
-    name: 'Borrow',
+  components: {  },
+    name: 'SmartLoan',
     data() {
       return {
       }
     },
+    methods: {
+      
+    }
   }
 </script>
 
