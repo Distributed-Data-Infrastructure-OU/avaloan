@@ -25,7 +25,7 @@
   align-items: center;
   border-radius: 21px;
   box-shadow: 7px 7px 30px 0 rgba(191, 188, 255, 0.5);
-  padding: 40px 30px;
+  padding: 40px 54px;
 }
 
 .block-wrapper.bordered {

@@ -43,11 +43,11 @@
   .page-content:before {
     content: ' ';
     display: block;
-    position: absolute;
+    position: fixed;
     left: 0;
     top: 0;
-    width: 100%;
-    height: 100%;
+    width: 100vw;
+    height: 100vh;
     opacity: 0.08;
     z-index: -1;
 

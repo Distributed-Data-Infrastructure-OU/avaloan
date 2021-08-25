@@ -47,13 +47,13 @@
 
 .logo {
   height: 18px;
-  opacity: 0.6;
+  opacity: 0.7;
   margin-left: 5px;
 }
 
 .fa-external-link {
   color: #7A7FFC;
-  margin-left: 5px;
+  margin-left: 10px;
   vertical-align: middle;
   cursor: pointer;
 }

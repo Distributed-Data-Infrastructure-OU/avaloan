@@ -10,8 +10,13 @@
       <!-- <div class="converted">
         {{ toUSD(value) | usd}}
       </div> -->
-    <button class="btn" :class="color" @click="emitValue" 
-      :style="{ 'margin-top': flexDirection == 'column' ? '40px' : '0'}">{{label}}</button>
+    <button class="btn" :class="[waiting ? 'waiting' : '', color]" @click="emitValue" 
+      :style="{ 'margin-top': flexDirection == 'column' ? '40px' : '0'}">
+      <div v-if="!waiting">
+        {{label}}
+      </div>
+      <vue-loaders-ball-beat v-else color="#FFFFFF" scale="0.5"></vue-loaders-ball-beat>
+      </button>
   </div>
 </template>
 
@@ -22,7 +27,8 @@
     props: {
       label: { type: String, default: '' },
       color: { type: String, default: 'purple' },
-      flexDirection: { type: String, default: 'column'}
+      flexDirection: { type: String, default: 'column'},
+      waiting: { type: Boolean, default: false },
     },
     data() {
       return {
@@ -31,7 +37,10 @@
     },
     methods: {
       emitValue() {
-        this.$emit('submitValue', this.value)
+        if (!this.waiting) {
+          this.$emit('submitValue', this.value);
+          this.value = 0;
+        }
       }   
     }
   }
@@ -103,6 +112,11 @@ input[type=number] {
   width: 140px;
   font-size: $font-size-sm;
   opacity: 0.6;
+}
+
+.waiting.btn {
+    opacity: 0.5;
+    cursor: initial;
 }
 
 </style>

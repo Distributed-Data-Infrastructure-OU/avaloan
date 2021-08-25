@@ -107,7 +107,24 @@ import { Line } from 'vue-chartjs'
                 max: this.maxY + this.maxY/20
               }
             }]
-          }       
+          } ,
+          tooltips: {
+            backgroundColor: '#A6A3FF',
+            titleFontFamily: 'Montserrat',
+            bodyFontFamily: 'Montserrat',
+            displayColors: false,
+            callbacks: {
+              label: function(tooltipItem, data) {
+                var label = data.datasets[tooltipItem.datasetIndex].label || '';
+
+                if (label) {
+                  label += ': ';
+                }
+                label += (Math.round(tooltipItem.yLabel * 100) / 100).toLocaleString('en-US');
+                return label + ' AVAX';
+              }
+            }
+          }   
         }
       }
     },

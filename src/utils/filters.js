@@ -54,13 +54,12 @@ export default function setupFilters() {
     interval = interval - minutes * milisecondsInMinute;
     const seconds = Math.max(0, parseInt(interval / milisecondsInSecond));
     interval = interval - seconds * milisecondsInSecond;
-    const miliseconds = interval;
 
     let result = "";
     if (days > 0) result += days + (days == 1 ? " day" : " days")
     if (hours > 0) result +=  " " + hours + " h";
-    if (minutes > 0) result +=  " " + minutes + " min";
-    if (seconds > 0) result += " " + seconds + " s";
+    if (minutes > 0 && days == 0) result +=  " " + minutes + " min";
+    if (seconds > 0 && days == 0 && hours == 0) result += " " + seconds + " s";
 
     result += " ago";
 

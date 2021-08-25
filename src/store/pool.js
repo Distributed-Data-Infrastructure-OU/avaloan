@@ -13,7 +13,8 @@ export default {
     depositInterests: null,
     userBorrowed: null,
     userDeposited: null,
-    deploymentBlock: null
+    deploymentBlock: null,
+    waitingForDeposit: null
   },
   mutations: {
     setPool(state, pool) {
@@ -48,6 +49,9 @@ export default {
     },
     setUserDeposited(state, deposited) {
       state.userDeposited = deposited; 
+    },
+    setWaitingForDeposit(state, waiting) {
+      state.waitingForDeposit = waiting; 
     }
   },
   getters: {
@@ -97,6 +101,7 @@ export default {
     async updateUserDeposited({ state, commit, rootState }) {
       const userDeposited = parseFloat(ethers.utils.formatEther(await state.pool.getDeposits(rootState.network.account)));
       commit('setUserDeposited', userDeposited);
+      commit('setWaitingForDeposit', false);
     },
     async updateUserBorrowed({ state, commit, rootState }) {
       const userDeposited = parseFloat(ethers.utils.formatEther(await state.pool.getBorrowed(rootState.network.account)));
@@ -175,7 +180,8 @@ export default {
 
       commit('setUserBorrowed', userBorrowed);
     },
-    async sendDeposit({ state, rootState, dispatch }, { amount }) {
+    async sendDeposit({ state, rootState, dispatch, commit }, { amount }) {
+      commit('setWaitingForDeposit', true);
       console.log("Depositing: " + amount);
       const tx = await state.pool.deposit({gasLimit: 500000, value: ethers.utils.parseEther(amount)});
       console.log("Deposited: " + tx.hash);
@@ -207,7 +213,8 @@ export default {
       dispatch('updateHistory');
       dispatch('updatePoolData');
     },
-    async borrow({ state, dispatch }, { amount }) {
+    async borrow({ state, dispatch, commit }, { amount }) {
+      commit('setWaitingForDeposit', true);
       console.log("Borrowing: " + amount);
   
       const tx = await state.pool.borrow(ethers.utils.parseEther(amount), {gasLimit: 500000});

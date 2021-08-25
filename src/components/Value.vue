@@ -83,7 +83,7 @@
 .logo {
   height: 24px;
   margin-right: 5px;
-  opacity: 0.6;
+  opacity: 0.7;
 }
 
 </style>

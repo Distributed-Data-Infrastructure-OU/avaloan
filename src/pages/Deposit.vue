@@ -12,10 +12,10 @@
     <Block class="block" :bordered="true">
       <Tabs>
         <Tab title="Deposit" imgActive="add-deposit-active" img="add-deposit" imgPosition="left">
-          <CurrencyInput label="Deposit" v-on:submitValue="deposit" flexDirection="column" :style="{'width': '490px'}"/>
+          <CurrencyInput label="Deposit" v-on:submitValue="deposit" :waiting="waitingForDeposit" flexDirection="column" :style="{'width': '490px'}"/>
         </Tab>
         <Tab title="Withdraw" imgActive="withdraw-deposit-active" img="withdraw-deposit" imgPosition="right">
-          <CurrencyInput label="Withdraw" v-on:submitValue="withdrawValue" flexDirection="column" :style="{'width': '490px'}" /> 
+          <CurrencyInput label="Withdraw" v-on:submitValue="withdrawValue" :waiting="waitingForDeposit" flexDirection="column" :style="{'width': '490px'}" /> 
         </Tab>
       </Tabs>
     </Block>  
@@ -55,7 +55,7 @@
     data() {
     },
     computed: {
-      ...mapState('pool', ['userDeposited', 'depositRate', 'totalDeposited', 'history'])
+      ...mapState('pool', ['userDeposited', 'depositRate', 'totalDeposited', 'history', 'waitingForDeposit'])
     },
     methods: {
       ...mapActions('pool', ['sendDeposit', 'withdraw']),
