@@ -182,14 +182,19 @@ export default {
     },
     async sendDeposit({ state, rootState, dispatch, commit }, { amount }) {
       commit('setWaitingForDeposit', true);
-      console.log("Depositing: " + amount);
-      const tx = await state.pool.deposit({gasLimit: 500000, value: ethers.utils.parseEther(amount)});
-      console.log("Deposited: " + tx.hash);
-      const receipt = await rootState.network.provider.waitForTransaction(tx.hash);
-      console.log(receipt);
-
-      dispatch('updateHistory');
-      dispatch('updatePoolData');
+      try {
+        console.log("Depositing: " + amount);
+        const tx = await state.pool.deposit({gasLimit: 500000, value: ethers.utils.parseEther(amount)});
+        console.log("Deposited: " + tx.hash);
+        const receipt = await rootState.network.provider.waitForTransaction(tx.hash);
+        console.log(receipt);
+        dispatch('updateHistory');
+        dispatch('updatePoolData');
+      } catch(e) {
+        console.error('Transaction error');
+        console.error(e);
+        commit('setWaitingForDeposit', false);
+      } 
     },
     async repay({ state, dispatch }, { amount }) {
       console.log("Repaying: " + amount);
@@ -203,25 +208,30 @@ export default {
       dispatch('updatePoolData');
     },
     async withdraw({ state, dispatch }, { amount }) {
-      console.log("Withdrawing: " + amount);
+      try {
+        commit('setWaitingForDeposit', true);
+        console.log("Withdrawing: " + amount);
+      
+        const tx = await state.pool.withdraw(ethers.utils.parseEther(amount.toString()), {gasLimit: 500000});
+        console.log("Withdrawn: " + tx.hash);
+        const receipt = await provider.waitForTransaction(tx.hash);
+        console.log(receipt);
     
-      const tx = await state.pool.withdraw(ethers.utils.parseEther(amount.toString()), {gasLimit: 500000});
-      console.log("Withdrawn: " + tx.hash);
-      const receipt = await provider.waitForTransaction(tx.hash);
-      console.log(receipt);
-  
-      dispatch('updateHistory');
-      dispatch('updatePoolData');
+        dispatch('updateHistory');
+        dispatch('updatePoolData');
+      } catch (e) {
+        console.error('Transaction error');
+        console.error(e);
+        commit('setWaitingForDeposit', false);
+      }
     },
     async borrow({ state, dispatch, commit }, { amount }) {
-      commit('setWaitingForDeposit', true);
       console.log("Borrowing: " + amount);
   
       const tx = await state.pool.borrow(ethers.utils.parseEther(amount), {gasLimit: 500000});
       console.log("Borrowed: " + tx.hash);
       const receipt = await provider.waitForTransaction(tx.hash);
       console.log(receipt);
-
       dispatch('updateHistory');
       dispatch('updatePoolData');
     }
