@@ -1,10 +1,15 @@
 <template>
   <div class="container">
     <Bar>
-      <Value label="Total deposited" :value="totalDeposited | avax" rate="23% APY"></Value>
-      <Value label="Total borrowed" :value="totalBorrowed | avax" rate="11% APR"></Value>
-    </Bar>
-    <Block class="block">
+      <Value label="Your deposits" 
+        :primary="{value: userDeposited, type: 'avax', showIcon: true}" 
+        :secondary="{value: toUSD(userDeposited), type: 'usd'}" />
+      <Value label="Current APR" :primary="{value: depositRate, type: 'percent'}"/>
+      <Value label="All deposits" 
+        :primary="{value: totalDeposited, type: 'avax', showIcon: true}" 
+        :secondary="{value: toUSD(totalDeposited), type: 'usd'}" />
+    </Bar>    
+    <Block class="block" :bordered="true">
       <Tabs>
         <Tab title="Deposit" imgActive="add-deposit-active" img="add-deposit" imgPosition="left">
           <CurrencyInput label="Deposit" v-on:submitValue="deposit" flexDirection="column" :style="{'width': '490px'}"/>
@@ -14,6 +19,13 @@
         </Tab>
       </Tabs>
     </Block>  
+    <Block class="block" background="rgba(255, 255, 255, 0.3)" v-if="(history && history.length > 0)">
+      <div class="history-title">Deposits history</div>
+      <div>
+        <DepositChart :items="history" class="deposit-chart"/>
+      </div>
+      <HistoryList :items="history" title="Last deposits" class="history-list"/>
+    </Block>
   </div>
 </template>
 
@@ -21,9 +33,11 @@
   import CurrencyInput from "@/components/CurrencyInput.vue";
   import Tabs from "@/components/Tabs.vue";
   import Tab from "@/components/Tab.vue";
-  import Bar from "@/components/Bar.vue";
   import Value from "@/components/Value.vue";
   import Block from "@/components/Block.vue";
+  import Bar from "@/components/Bar.vue";
+  import HistoryList from "@/components/HistoryList.vue";
+  import DepositChart from "@/components/DepositChart.vue";
   import { mapState, mapActions } from 'vuex';
 
   export default {
@@ -32,16 +46,16 @@
       CurrencyInput, 
       Tabs, 
       Tab,
-      Bar,
       Value,
-      Block
+      Block,
+      Bar,
+      HistoryList,
+      DepositChart
     },
     data() {
-      return {
-      }
     },
     computed: {
-      ...mapState('pool', ['totalBorrowed', 'totalDeposited']),
+      ...mapState('pool', ['userDeposited', 'depositRate', 'totalDeposited', 'history'])
     },
     methods: {
       ...mapActions('pool', ['sendDeposit', 'withdraw']),
@@ -56,7 +70,23 @@
 </script>
 
 <style lang="scss" scoped>
-.block {
+@import "~@/styles/variables";
+
+.block, .history-list, .deposit-chart {
   margin-top: 30px;
 }
+
+.history-block {
+  padding: 25px 53.5px 20px;
+  border-radius: 25px;
+  box-shadow: 7px 7px 30px 0 rgba(191, 188, 255, 0.5);
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+.history-title {
+  font-size: $font-size-sm;
+  color: #696969;
+  font-weight: 500;
+}
+
 </style>

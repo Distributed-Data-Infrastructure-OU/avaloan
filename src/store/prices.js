@@ -3,7 +3,7 @@ import { getAvaxPrice } from "@/api/coingecko"
 export default {
   namespaced: true,
   state: {
-    avaxPrice: null
+    avaxPrice: 0
   },
   mutations: {
     setAvaxPrice(state, price) {
@@ -13,7 +13,13 @@ export default {
   getters: {
   },
   actions: {
-    async updateAvaxPrice() {
+    async initPrices({ dispatch }) {
+      console.log('elo')
+      Promise.all([
+        dispatch('updateAvaxPrice')
+      ])
+    },
+    async updateAvaxPrice({ commit }) {
         const avaxPrice = await getAvaxPrice();
         commit('setAvaxPrice', avaxPrice);
     }

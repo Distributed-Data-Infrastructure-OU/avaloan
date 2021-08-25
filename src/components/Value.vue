@@ -1,16 +1,17 @@
 <template>
   <div class="value-wrapper" :style="{ 'flex-direction': flexDirection}"> 
     <div class="label">{{label}}</div>
-    <div></div>
-    <div class="avax-value">
-      <div>3121</div><img class="avax-logo" src="src/assets/icons/avax-icon.svg"/>
-    </div>
-    <div class="usd-value">
-      <div>12323.92 USD</div>
-    </div>
-    <div v-if="rate" class="rate-value">
-      <div>{{rate}}</div>
-    </div>
+    <div class="values" v-if="primary.value !== null">
+      <div class="value">
+        <img class="logo" v-if="primary.showIcon" :src="`src/assets/icons/${primary.type}-icon.svg`"/>
+        <div>{{format(primary.value, primary.type)}}</div>
+      </div>
+      <div v-if="secondary" class="sub-value">
+        <img class="logo" v-if="secondary.showIcon" :src="`src/assets/icons/${secondary.type}-icon.svg`"/>
+        <div v-if="secondary.value">{{secondary.showIcon ? secondary.value : format(secondary.value, secondary.type)}}</div>
+      </div>
+    </div>  
+    <vue-loaders-ball-beat v-else color="#A6A3FF" scale="0.5"></vue-loaders-ball-beat>
   </div>
 </template>
 
@@ -19,12 +20,17 @@
     name: 'Value',
     props: {
       label: String,
-      value: String,
+      primary: {},
+      secondary: {},
       flexDirection: {
         type: String,
         default: "column"
-      },
-      rate: String
+      }
+    },
+    methods: {
+      format(value, filter) {
+        return this.$options.filters[filter](value);
+      }
     }
   }
 </script>
@@ -36,6 +42,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 200px;
 }
 
 .label {
@@ -43,24 +50,41 @@
   font-size: $font-size-sm;
 }
 
-.avax-value, .usd-value {
+.value, .sub-value {
   display: flex;
   align-items: center;
 }
 
-.avax-value {
+.value {
   font-size: $font-size-lg;
-  margin: 10px 0;
+  margin: 5px 0;
 }
 
-.avax-logo {
-  height: 24px;
-  margin-left: 10px;
-}
-
-.usd-logo {
-  height: 16px;
+.sub-value {
   margin-left: 5px;
+  color: #696969;
+  font-size: $font-size-xsm;
+  opacity: 0.6;
 }
+
+// .values {
+//   display: flex;
+//   margin-top: 5px;
+// }
+
+.values {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 5px;
+  justify-content: center;
+}
+
+.logo {
+  height: 24px;
+  margin-right: 5px;
+  opacity: 0.6;
+}
+
 </style>
 

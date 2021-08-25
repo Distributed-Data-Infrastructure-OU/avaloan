@@ -1,9 +1,15 @@
 <template>
   <div class="currency-input-wrapper" :style="{ 'flex-direction': flexDirection}">
     <div class="input-wrapper" :style="{ 'margin-top': flexDirection == 'column-reverse' ? '40px' : '0'}">
-      <input type="number" v-model="value">
+      <input type="number" v-model="value" step='0.01' min="0" max="999999">
+      <div class="converted" v-if="value && (value !== 0)">
+        ~ {{ toUSD(value) | usd}}
+      </div>
       <img src="src/assets/icons/avax-logo.svg"/>
     </div>
+      <!-- <div class="converted">
+        {{ toUSD(value) | usd}}
+      </div> -->
     <button class="btn" :class="color" @click="emitValue" 
       :style="{ 'margin-top': flexDirection == 'column' ? '40px' : '0'}">{{label}}</button>
   </div>
@@ -20,7 +26,7 @@
     },
     data() {
       return {
-        value: { type: Number, default: 0 },
+        value: 0
       }
     },
     methods: {
@@ -32,6 +38,8 @@
 </script>
 
 <style lang="scss" scoped>
+@import "~@/styles/variables";
+
 .currency-input-wrapper {
   display: flex;
   align-items: center;
@@ -48,6 +56,8 @@
   padding-left: 40px;
   padding-right: 30px;
   border: none;
+    //testi
+  width: 500px;
 }
 
 input {
@@ -56,9 +66,9 @@ input {
   font-family: Montserrat;
   font-weight: 600;
   font-size: 24px;
+  //testing
+  width:220px;
 }
-
-
 
 input:focus{
   outline: none;
@@ -75,6 +85,24 @@ input::-webkit-inner-spin-button {
 /* Firefox */
 input[type=number] {
   -moz-appearance: textfield;
+}
+
+// .converted {
+//   color: #696969;
+//   margin-right: 5px;
+//   align-self: flex-start;
+//   margin-left: 38px;
+//   margin-top: 6px;
+// }
+
+.converted {
+  color: #696969;
+  margin-right: 15px;
+  white-space: nowrap;
+  text-align: right;
+  width: 140px;
+  font-size: $font-size-sm;
+  opacity: 0.6;
 }
 
 </style>

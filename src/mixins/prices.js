@@ -6,7 +6,11 @@ export default {
     }
   },
   methods: {
-
+    toUSD(avax) {
+      if (this.avaxPrice) {
+        return avax * this.avaxPrice;
+      }
+    }
   },
   computed: {
     ...mapState('prices', {

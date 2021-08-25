@@ -1,16 +1,17 @@
 <template lang="html">
-  <div :class="">
+  <div class="tabs">
     <ul class='tabs-header'>
       <li v-for='(tab, index) in tabs'
         :key='tab.title'
         @click='selectTab(index)'
         :class="{
           'tab-selected': (index == selectedIndex),
-          'img-right': tab.imgPosition == 'right'}"
-        class="tab-button"
-        >
-        <img :src="'src/assets/icons/' + (index == selectedIndex ? tab.imgActive : tab.img) + '.svg'"/>
-        <div>{{ tab.title }}</div>
+          'img-right': tab.imgPosition == 'right'}">
+        <div class="tab-button">
+          <img v-if="tab.img" :src="'src/assets/icons/' + (index == selectedIndex ? tab.imgActive : tab.img) + '.svg'"/>
+          <div>{{ tab.title }}</div>
+        </div>  
+        <img v-if="index !== tabs.length - 1" src="src/assets/icons/slash.svg" class="slash">
       </li>
     </ul>
     <slot></slot>
@@ -48,7 +49,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import "~@/styles/variables";
 
   ul.tabs-header {
@@ -60,7 +61,7 @@ export default {
     justify-content: center;
   }
 
-  ul.tabs-header > li {
+  ul.tabs-header .tab-button {
     padding: 15px 30px;
     border-radius: 10px;
     margin: 0;
@@ -70,33 +71,45 @@ export default {
     align-items: center;
   }
 
-  .tab {
+  .tab-button {
     display: inline-block;
     color: black;
     padding-left: 20px;
     padding-right: 20px;
-    min-width: 800px;
     border-radius: 10px;
   }
-
-  .tabs .tab{
-    background-color: #fff;
-  }
   
-  li.tab-selected {
+  .tab-selected .tab-button {
     font-weight: bold;
+  }
+
+  li {
+    display: flex;
   }
 
   li:not(.tab-selected):hover {
     font-weight: 500;
   }
 
-  .img-right {
+  .img-right .tab-button {
     flex-direction: row-reverse;
   }
 
-  .tab-button {
-    width: 220px;
+  .tab-button:not(.img-right) {
+    display: flex;
+    justify-content: flex-end;
   }
 
+  .tab-button {
+    width: 255px;
+  }
+
+  .tabs {
+    width: 100%;
+  }
+
+  .slash:not(.md-image) {
+    height: 50px;
+    align-self: center;
+  }
 </style>

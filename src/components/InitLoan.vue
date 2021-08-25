@@ -1,10 +1,8 @@
 <template>
   <div>
-    <div v-if="!hasSmartLoan">
+    <div>
         <CurrencyInput label="Borrow" v-on:submitValue="borrow" />
-    </div>
-    <div v-else>
-    </div>    
+    </div>  
   </div>
 </template>
 
@@ -23,10 +21,7 @@
       }
     },
     computed: {
-      ...mapState('pool', ['pool']),
-      hasSmartLoan: function() {
-        return false;
-      }  
+      ...mapState('pool', ['pool'])
     },
     methods: {
       ...mapActions('loan', ['createNewLoan']),

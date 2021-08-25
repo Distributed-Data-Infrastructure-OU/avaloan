@@ -3,7 +3,6 @@
     <div class="links-wrapper">
       <router-link to="/deposit"><span title="Deposit">Deposit</span></router-link>
       <router-link to="/invest"><span title="Invest">Invest</span></router-link>
-      <router-link to="/dashboard"><span title="Dashboard">Dashboard</span></router-link>
     </div>
   </div>
 </template>
@@ -23,11 +22,8 @@
 @import "~@/styles/variables";
 
 .navbar {
-  width: 100%;
   text-align: center;
   font-size: $font-size-sm;
-  padding-top: 40px;
-  padding-bottom: 40px;
 }
 
 a {

@@ -8,10 +8,14 @@ import AsyncComputed from 'vue-async-computed'
 import store from './store';
 import pricesMixin from './mixins/prices';
 import setupFilters from './utils/filters';
+import 'vue-loaders/dist/vue-loaders.css';
+import VueLoadersBallBeat from 'vue-loaders/dist/loaders/ball-beat';
+
+Vue.config.productionTip = false;
 
 Vue.use(Vue2Filters);
-Vue.config.productionTip = false;
 Vue.use(AsyncComputed);
+Vue.use(VueLoadersBallBeat);
 Vue.mixin(pricesMixin);
 
 setupFilters();
