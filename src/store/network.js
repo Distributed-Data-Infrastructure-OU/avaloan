@@ -9,7 +9,7 @@ export default {
     web3: null,
     provider: null,
     account: null,
-    ethBalance: null
+    balance: null
   },
   mutations: {
     setWeb3(state, web3) {
@@ -21,7 +21,7 @@ export default {
     setAccount(state, account) {
       state.account = account;
     },
-    setEthBalance(state, balance) {
+    setBalance(state, balance) {
       state.balance = balance;
     }
   },
@@ -32,6 +32,7 @@ export default {
         await dispatch('initWeb3');
         await dispatch('initProvider');
         await dispatch('initAccount');
+        await dispatch('updateBalance');
     },
     async initWeb3({ commit, state }) {
       console.log("Getting web3");
@@ -73,14 +74,14 @@ export default {
         console.log("No web3 accounts available.")
       }
     },
-    async updateEthBalance({ state }) {
+    async updateBalance({ state, commit }) {
       const mainAccount = state.account;
       const web3 = state.web3;
       web3.eth.getBalance(mainAccount, function(e, result) {
-        balance = parseFloat(web3.fromWei(result, 'ether'));
-        console.log("Eth balance: " + balance);
+        let balance = parseFloat(web3.utils.fromWei(result, 'ether'));
+        console.log("Balance: " + balance);
 
-        commit('setEthBalance', balance);
+        commit('setBalance', balance);
       });
     }
   },

@@ -5,7 +5,8 @@
       <img src="src/assets/icons/avaloan-logo.svg" class="logo">
     </router-link> 
     <Navbar></Navbar>
-    <div class="connect" v-on:click="initNetwork()">Connect to wallet</div>
+    <div class="connect" v-if="!account" v-on:click="initNetwork()">Connect to wallet</div>
+    <Wallet class="wallet" v-else />
   </div>
   <router-view></router-view>
 </div>
@@ -15,11 +16,13 @@
 
 <script>
   import Navbar from "@/components/Navbar.vue";
-  import { mapActions } from "vuex";
+  import Wallet from "@/components/Wallet.vue";
+  import { mapActions, mapState } from "vuex";
 
   export default {
     components: {
-      Navbar
+      Navbar,
+      Wallet
     },
     async created() {
       await this.initNetwork();
@@ -30,6 +33,9 @@
     data() {
       return {
       }
+    },
+    computed: {
+      ...mapState('network', ['account'])
     },
     methods: {
       ...mapActions("network", ["initNetwork"]),
@@ -69,9 +75,12 @@
     }
   }
 
+  .connect, .wallet {
+    margin-right: 40px;
+  }
+
   .connect {
     white-space: nowrap;
-    margin-right: 40px;
     color: #6b70ed;
     cursor: pointer;
 

@@ -1,4 +1,5 @@
 import POOL from '@contracts/Pool.json';
+import Vue from "vue";
 
 export default {
   namespaced: true,
@@ -190,10 +191,13 @@ export default {
         console.log(receipt);
         dispatch('updateHistory');
         dispatch('updatePoolData');
+        Vue.$toast.success("Transaction success");
+        dispatch('network/updateBalance', {}, {root:true})
       } catch(e) {
         console.error('Transaction error');
         console.error(e);
         commit('setWaitingForDeposit', false);
+        Vue.$toast.error("Transaction error");
       } 
     },
     async repay({ state, dispatch }, { amount }) {
@@ -207,7 +211,7 @@ export default {
       dispatch('updateUserBorrowed');
       dispatch('updatePoolData');
     },
-    async withdraw({ state, dispatch }, { amount }) {
+    async withdraw({ state, dispatch, commit }, { amount }) {
       try {
         commit('setWaitingForDeposit', true);
         console.log("Withdrawing: " + amount);
@@ -219,13 +223,16 @@ export default {
     
         dispatch('updateHistory');
         dispatch('updatePoolData');
+        Vue.$toast.success("Transaction success");
+        dispatch('network/updateBalance', {}, {root:true})
       } catch (e) {
         console.error('Transaction error');
         console.error(e);
         commit('setWaitingForDeposit', false);
+        Vue.$toast.error("Transaction error");
       }
     },
-    async borrow({ state, dispatch, commit }, { amount }) {
+    async borrow({ state, dispatch }, { amount }) {
       console.log("Borrowing: " + amount);
   
       const tx = await state.pool.borrow(ethers.utils.parseEther(amount), {gasLimit: 500000});

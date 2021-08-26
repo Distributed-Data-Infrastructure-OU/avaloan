@@ -10,12 +10,17 @@ import pricesMixin from './mixins/prices';
 import setupFilters from './utils/filters';
 import 'vue-loaders/dist/vue-loaders.css';
 import VueLoadersBallBeat from 'vue-loaders/dist/loaders/ball-beat';
+import Toast from "vue-toastification";
+import "vue-toastification/dist/index.css";
+import "./styles/overrides.scss";
 
 Vue.config.productionTip = false;
 
 Vue.use(Vue2Filters);
 Vue.use(AsyncComputed);
 Vue.use(VueLoadersBallBeat);
+Vue.use(Toast);
+
 Vue.mixin(pricesMixin);
 
 setupFilters();
