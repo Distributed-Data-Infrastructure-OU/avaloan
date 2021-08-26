@@ -84,8 +84,8 @@
 }
 
 .history-title {
-  font-size: $font-size-sm;
-  color: #696969;
+  font-size: $font-size-mlg;
+  color: #7d7d7d;
   font-weight: 500;
 }
 

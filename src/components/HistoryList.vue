@@ -1,6 +1,6 @@
 <template>
   <div class="list"> 
-    <!-- <div class="title">{{ title }}</div> -->
+    <div class="title">{{ title }}</div>
     <div class="elements">
       <template v-for="item in items">
         <div v-bind:key="item.time.toString()" class="element">
@@ -43,6 +43,7 @@
   border-width: 2px 0 0 0;
   border-image-source: linear-gradient(91deg, rgba(223, 224, 255, 0.43), rgba(255, 225, 194, 0.62), rgba(255, 211, 224, 0.79)); 
   border-image-slice: 1;
+  font-weight: 500;
 }
 
 .logo {
@@ -56,6 +57,12 @@
   margin-left: 10px;
   vertical-align: middle;
   cursor: pointer;
+}
+
+.title {
+  color: #696969;
+  font-weight: 500;
+  margin-bottom: 16px;
 }
 
 </style>

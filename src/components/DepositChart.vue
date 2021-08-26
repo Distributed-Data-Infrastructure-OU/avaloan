@@ -97,19 +97,22 @@ import { Line } from 'vue-chartjs'
             }],
             yAxes: [{
               gridLines: {
-                  drawOnChartArea: false,
-                  tickMarkLength: 0,
-                  drawBorder: false
+                borderDash: [8, 4],
+                drawOnChartArea: true,
+                tickMarkLength: 0,
+                drawBorder: false,
               },
               ticks: {
-                display: false,
-                min: 0 - this.maxY/20,
-                max: this.maxY + this.maxY/20
+                maxTicksLimit: 2,
+                min: 0,
+                max: this.maxY + this.maxY/20,
+                fontFamily: 'Montserrat',
+                padding: 10,
               }
             }]
           } ,
           tooltips: {
-            backgroundColor: '#A6A3FF',
+            backgroundColor: '#6b70ed',
             titleFontFamily: 'Montserrat',
             bodyFontFamily: 'Montserrat',
             displayColors: false,
