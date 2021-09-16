@@ -3,18 +3,22 @@
     <Bar>
       <Value label="Your deposits" 
         :primary="{value: userDeposited, type: 'avax', showIcon: true}" 
-        :secondary="{value: toUSD(userDeposited), type: 'usd'}" />
-      <Value label="Current APR" :primary="{value: depositRate, type: 'percent'}"/>
+        :secondary="{value: toUSD(userDeposited), type: 'usd'}"
+        :flexDirection="isMobile ? 'row' : 'column'" />
+      <Value label="Current APR" 
+        :primary="{value: depositRate, type: 'percent'}"
+        :flexDirection="isMobile ? 'row' : 'column'" />
       <Value label="All deposits" 
-        :primary="{value: totalDeposited, type: 'avax', showIcon: true}" 
-        :secondary="{value: toUSD(totalDeposited), type: 'usd'}" />
+        :primary="{value: totalDeposited, type: 'avax', showIcon: true}" ą
+        :secondary="{value: toUSD(totalDeposited), type: 'usd'}" 
+        :flexDirection="isMobile ? 'row' : 'column'" />
     </Bar>    
     <Block class="block" :bordered="true">
       <Tabs>
-        <Tab title="Deposit" imgActive="add-deposit-active" img="add-deposit" imgPosition="left">
+        <Tab title="Deposit" imgActive="add-deposit-active" img="add-deposit" imgPosition="left" titleWidth="100px">
           <CurrencyInput label="Deposit" v-on:submitValue="deposit" :waiting="waitingForDeposit" flexDirection="column" :style="{'width': '490px'}"/>
         </Tab>
-        <Tab title="Withdraw" imgActive="withdraw-deposit-active" img="withdraw-deposit" imgPosition="right">
+        <Tab title="Withdraw" imgActive="withdraw-deposit-active" img="withdraw-deposit" imgPosition="right" titleWidth="140px">
           <CurrencyInput label="Withdraw" v-on:submitValue="withdrawValue" :waiting="waitingForDeposit" flexDirection="column" :style="{'width': '490px'}" /> 
         </Tab>
       </Tabs>
@@ -22,7 +26,7 @@
     <Block class="block" background="rgba(255, 255, 255, 0.3)" v-if="(history && history.length > 0)">
       <div class="history-title">Deposits history</div>
       <div>
-        <DepositChart :items="history" class="deposit-chart"/>
+        <Chart :dataPoints="chartPoints" :maxY="maximumDeposit" stepped="before" class="deposit-chart"/>
       </div>
       <HistoryList :items="history" title="Last deposits" class="history-list"/>
     </Block>
@@ -37,7 +41,7 @@
   import Block from "@/components/Block.vue";
   import Bar from "@/components/Bar.vue";
   import HistoryList from "@/components/HistoryList.vue";
-  import DepositChart from "@/components/DepositChart.vue";
+  import Chart from "@/components/Chart.vue";
   import { mapState, mapActions } from 'vuex';
 
   export default {
@@ -50,12 +54,48 @@
       Block,
       Bar,
       HistoryList,
-      DepositChart
+      Chart
     },
     data() {
+      return {
+        maximumDeposit: 0
+      }
     },
     computed: {
-      ...mapState('pool', ['userDeposited', 'depositRate', 'totalDeposited', 'history', 'waitingForDeposit'])
+      ...mapState('pool', ['userDeposited', 'depositRate', 'totalDeposited', 'history', 'waitingForDeposit']),
+      chartPoints() {
+        if (this.history == null || this.history.length == 0) {
+          return [];
+        }
+
+        let currentDeposit = 0;
+        let maxDeposit = 0;
+
+        let dataPoints = this.history.slice().reverse().map(
+          (e) => {
+            let value = e.type == "Deposit" ? e.value : -e.value;
+            currentDeposit += value;
+
+            if (currentDeposit > maxDeposit) maxDeposit = currentDeposit;
+
+            return {
+              x: e.time.getTime(),
+              y: currentDeposit
+            }
+          }
+        );
+
+        dataPoints.push(
+          {
+            x: Date.now(),
+            y: dataPoints.slice(-1)[0].y
+          }
+        )
+
+        this.maximumDeposit = maxDeposit;
+
+        return dataPoints;
+      }
     },
     methods: {
       ...mapActions('pool', ['sendDeposit', 'withdraw']),

@@ -11,7 +11,7 @@
         <div v-if="secondary.value">{{secondary.showIcon ? secondary.value : format(secondary.value, secondary.type)}}</div>
       </div>
     </div>  
-    <vue-loaders-ball-beat v-else color="#A6A3FF" scale="0.5"></vue-loaders-ball-beat>
+    <vue-loaders-ball-beat v-else color="#A6A3FF" scale="0.5" :style="{ 'margin-top': flexDirection == 'row' ? '8px' : '0'}"></vue-loaders-ball-beat>
   </div>
 </template>
 
@@ -41,13 +41,28 @@
 .value-wrapper {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  width: 200px;
+
+  align-items: flex-start;
+  justify-content: space-between;
+
+  @media screen and (min-width: $md) {
+    align-items: center;
+    justify-content: initial;
+    width: 200px;
+  }
 }
 
 .label {
-  color: #696969;
-  font-size: $font-size-sm;
+  white-space: nowrap;
+  width: 50%;
+  margin-top: 10px;
+  height: 50px;
+
+  @media screen and (min-width: $md) {
+    margin-top: 0;
+    width: initial;
+    height: initial;
+  }
 }
 
 .value, .sub-value {
@@ -56,8 +71,12 @@
 }
 
 .value {
-  font-size: $font-size-lg;
   margin: 5px 0;
+  font-size: $font-size-mlg;
+
+  @media screen and (min-width: $md) {
+    font-size: $font-size-lg;
+  }
 }
 
 .sub-value {
@@ -66,11 +85,6 @@
   font-size: $font-size-xsm;
   opacity: 0.6;
 }
-
-// .values {
-//   display: flex;
-//   margin-top: 5px;
-// }
 
 .values {
   display: flex;
@@ -81,9 +95,13 @@
 }
 
 .logo {
-  height: 24px;
   margin-right: 5px;
   opacity: 0.7;
+  height: 20px;
+
+  @media screen and (min-width: $md) {
+    height: 24px;
+  }
 }
 
 </style>

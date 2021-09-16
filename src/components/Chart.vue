@@ -40,81 +40,54 @@
   })
 
   const CustomLine = generateChart('custom-line', 'LineWithLine')
+  
   export default {
-    name: 'DepositChart',
+    name: 'Chart',
     extends: CustomLine,
     props: {
-      items: {
+      dataPoints: {
         type: Array,
-        default: []
+        default: () => [],
       },
+      minY: 0,
+      maxY: null,
       height: null,
       width: null,
+      lineWidth: null,
+      stepped: 'none',
+      onlyLine: false
     },
     data() {
       return {
-        maxY: 0,
-        minX: 0,
-        maxX: 0,
         gradient: null
       }
     },
     mounted () {
-      this.renderChart(this.data, this.options)
+      this.renderChart(this.chartData, this.options)
     },
     computed: {
-      values() {
-        if (this.items == null || this.items.length == 0) {
-          return [];
-        }
-        let maximumY = 0;
-
-        let currentDeposit = 0;
-
-        let dataPoints = this.items.slice().reverse().map(
-          (e) => {
-            let value = e.type == "Deposit" ? e.value : -e.value;
-            currentDeposit += value;
-
-            if (currentDeposit > maximumY) maximumY = currentDeposit;
-
-            return {
-              x: e.time.getTime(),
-              y: currentDeposit
-            }
-          }
-        );
-
-        dataPoints.push(
-          {
-            x: Date.now(),
-            y: dataPoints.slice(-1)[0].y
-          }
-        )
-
-        this.maxY = maximumY;
-        this.minX = dataPoints[0].x;
-        this.maxX = dataPoints.slice(-1)[0].x;
-
-        return dataPoints;
+      minX() {
+        return this.dataPoints[0].x;
       },
-      data() {
+      maxX() {
+        return this.dataPoints.slice(-1)[0].x;
+      },
+      chartData() {
         return {
           datasets: [
             {
               fill: false,
-              steppedLine: 'before',
-              data: this.values,
+              steppedLine: this.stepped,
+              data: this.dataPoints,
               borderColor: (context) => this.borderColor(context),
-              borderWidth: 4
+              borderWidth: this.lineWidth
             }
           ]
         };
       },
       options() {
-        console.log('updating options')
         return {
-          aspectRatio: 4, 
+          aspectRatio: this.isMobile ? 2 : 4, 
           height: null,
           width: null,
           legend: {
@@ -141,22 +114,24 @@
             }],
             yAxes: [{
               gridLines: {
-                zeroLineWidth: 0.5,
+                zeroLineWidth: this.onlyLine ? 0 : 0.5,
                 borderDash: [8, 4],
-                drawOnChartArea: true,
+                drawOnChartArea: !this.onlyLine,
                 tickMarkLength: 0,
                 drawBorder: false,
               },
               ticks: {
-                maxTicksLimit: 2,
-                min: 0,
-                max: this.maxY + this.maxY/20,
+                display: !this.onlyLine,
+                maxTicksLimit: 1,
+                min: this.minY,
+                max: this.maxY,
                 fontFamily: 'Montserrat',
                 padding: 10,
               }
             }]
           } ,
           tooltips: {
+            enabled: !this.onlyLine,
             intersect: false, 
             mode: "index",
             backgroundColor: '#6b70ed',
@@ -179,11 +154,11 @@
       }
     },
     watch: {
-      values() {
-        this.renderChart(this.data, this.options);
+      dataPoints() {
+        this.renderChart(this.chartData, this.options);
       },
       options() {
-        this.renderChart(this.data, this.options);
+        this.renderChart(this.chartData, this.options);
       }
     },
     methods: {

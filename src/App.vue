@@ -46,6 +46,8 @@
 </script>
 
 <style lang="scss" scoped>
+@import "~@/styles/variables";
+
   .page-content:before {
     content: ' ';
     display: block;
@@ -63,12 +65,17 @@
   .top-bar {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     padding: 40px 0;
   }
 
   .logo {
-    margin-left: 40px;
     cursor: pointer;
+    margin-left: 5vw;
+
+    @media screen and (min-width: $md) {
+      margin-left: 40px;
+    }
 
     &:hover {
       transform: scale(1.02);
@@ -76,7 +83,11 @@
   }
 
   .connect, .wallet {
-    margin-right: 40px;
+    margin-right: 5vw;
+
+    @media screen and (min-width: $md) {
+      margin-right: 40px;
+    }
   }
 
   .connect {

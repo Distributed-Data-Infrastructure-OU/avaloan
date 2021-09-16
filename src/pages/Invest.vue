@@ -1,13 +1,15 @@
 <template>
   <div class="container">
-    <div v-if="!isLoanAlreadyCreated">
+    <div v-if="false && !isLoanAlreadyCreated">
     <Bar>
       <Value label="Available in pool" 
         :primary="{value: totalDeposited, type: 'avax', showIcon: true}" 
-        :secondary="{value: toUSD(totalDeposited), type: 'usd'}" />
-      <Value label="Current APY" :primary="{value: borrowingRate, type: 'percent'}"/>
+        :secondary="{value: toUSD(totalDeposited), type: 'usd'}" 
+        :flexDirection="isMobile ? 'row' : 'column'" />
+      <Value label="Current APY" :primary="{value: borrowingRate, type: 'percent'}"
+        :flexDirection="isMobile ? 'row' : 'column'" />
     </Bar>    
-      <Block class="block">
+      <Block class="block" :bordered="true">
         <InitLoan/>
       </Block>
     </div>

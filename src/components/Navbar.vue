@@ -1,6 +1,6 @@
 <template>
   <div class="navbar"> 
-    <div class="links-wrapper">
+    <div class="links-wrapper" :class="{'mobile': isMobile}">
       <router-link to="/deposit"><span title="Deposit">Deposit</span></router-link>
       <router-link to="/invest"><span title="Invest">Invest</span></router-link>
     </div>
@@ -24,6 +24,18 @@
 .navbar {
   text-align: center;
   font-size: $font-size-sm;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  padding-bottom: 1rem;
+  z-index: 1;
+
+  @media screen and (min-width: $md) {
+    position: initial;
+    bottom: initial;
+    width: initial;
+    padding-bottom: initial;
+  }
 }
 
 a {
@@ -48,6 +60,17 @@ a:not(.router-link-active):hover {
 
 a :visited{
   color: initial;
+}
+
+.links-wrapper.mobile {
+  display: flex;
+  align-items: center;
+  width: min-content;
+  background-color: #FCF7F9;
+  box-shadow: 7px 7px 30px 0 rgba(191, 188, 255, 50%);
+  padding: 0.25rem;
+  border-radius: 99999px;
+  margin: auto;
 }
 
 </style>

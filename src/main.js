@@ -6,7 +6,7 @@ import router from './router'
 import Vue2Filters from 'vue2-filters'
 import AsyncComputed from 'vue-async-computed'
 import store from './store';
-import pricesMixin from './mixins/prices';
+import globalMixin from './mixins/global';
 import setupFilters from './utils/filters';
 import 'vue-loaders/dist/vue-loaders.css';
 import VueLoadersBallBeat from 'vue-loaders/dist/loaders/ball-beat';
@@ -21,7 +21,7 @@ Vue.use(AsyncComputed);
 Vue.use(VueLoadersBallBeat);
 Vue.use(Toast);
 
-Vue.mixin(pricesMixin);
+Vue.mixin(globalMixin);
 
 setupFilters();
 

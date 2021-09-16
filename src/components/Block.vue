@@ -19,13 +19,19 @@
 </script>
 
 <style lang="scss" scoped>
+@import "~@/styles/variables";
+
 .block-wrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
   border-radius: 21px;
   box-shadow: 7px 7px 30px 0 rgba(191, 188, 255, 0.5);
-  padding: 40px 54px;
+  padding: 1.5rem;
+
+  @media screen and (min-width: $md) {
+    padding: 40px 54px;
+  }
 }
 
 .block-wrapper.bordered {
@@ -41,10 +47,6 @@
   content: '';
   z-index: -1;
   border-radius: 25px;
-}
-
-.block-wrapper {
-  
 }
 
 </style>

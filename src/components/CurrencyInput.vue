@@ -1,5 +1,5 @@
 <template>
-  <div class="currency-input-wrapper" :style="{ 'flex-direction': flexDirection}">
+  <div class="currency-input-wrapper" :style="{ 'flex-direction': flexDirection}" :class="small">
     <div class="input-wrapper" :style="{ 'margin-top': flexDirection == 'column-reverse' ? '40px' : '0'}">
       <input type="number" v-model="value" step='0.01' min="0" max="999999">
       <div class="converted" v-if="value && (value !== 0)">
@@ -7,16 +7,20 @@
       </div>
       <img src="src/assets/icons/avax-logo.svg"/>
     </div>
-      <!-- <div class="converted">
-        {{ toUSD(value) | usd}}
-      </div> -->
     <button class="btn" :class="[waiting ? 'waiting' : '', color]" @click="emitValue" 
       :style="{ 'margin-top': flexDirection == 'column' ? '40px' : '0'}">
       <div v-if="!waiting">
         {{label}}
       </div>
       <vue-loaders-ball-beat v-else color="#FFFFFF" scale="0.5"></vue-loaders-ball-beat>
-      </button>
+    </button>
+    <button v-if="secondButton" class="btn" :class="[waiting ? 'waiting' : '', color]" @click="emitSecondValue" 
+      :style="{ 'margin-top': flexDirection == 'column' ? '40px' : '0'}">
+      <div v-if="!waiting">
+        {{secondLabel}}
+      </div>
+      <vue-loaders-ball-beat v-else color="#FFFFFF" scale="0.5"></vue-loaders-ball-beat>
+    </button>
   </div>
 </template>
 
@@ -26,6 +30,8 @@
     name: 'CurrencyInput',
     props: {
       label: { type: String, default: '' },
+      secondButton: { type: Boolean, default: false },
+      secondLabel: { type: String, default: '' },
       color: { type: String, default: 'purple' },
       flexDirection: { type: String, default: 'column'},
       waiting: { type: Boolean, default: false },
@@ -62,11 +68,15 @@
   background-image: linear-gradient(114deg, rgba(115, 117, 252, 0.08) 39%, rgba(255, 162, 67, 0.08) 62%, rgba(245, 33, 127, 0.08) 81%);
   height: 68px;
   border-radius: 15px;
-  padding-left: 40px;
-  padding-right: 30px;
+  padding-left: 10px;
+  padding-right: 5px;
   border: none;
-    //testi
-  width: 500px;
+  width: 100%;
+
+  @media screen and (min-width: $md) {
+    padding-left: 40px;
+    padding-right: 30px;
+  }    
 }
 
 input {
@@ -75,8 +85,8 @@ input {
   font-family: Montserrat;
   font-weight: 600;
   font-size: 24px;
-  //testing
-  width:220px;
+  padding-top: 0;
+  padding-bottom: 0;
 }
 
 input:focus{
@@ -95,14 +105,6 @@ input::-webkit-inner-spin-button {
 input[type=number] {
   -moz-appearance: textfield;
 }
-
-// .converted {
-//   color: #696969;
-//   margin-right: 5px;
-//   align-self: flex-start;
-//   margin-left: 38px;
-//   margin-top: 6px;
-// }
 
 .converted {
   color: #696969;

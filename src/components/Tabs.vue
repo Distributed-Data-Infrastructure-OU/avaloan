@@ -9,7 +9,7 @@
           'img-right': tab.imgPosition == 'right'}">
         <div class="tab-button">
           <img v-if="tab.img" :src="'src/assets/icons/' + (index == selectedIndex ? tab.imgActive : tab.img) + '.svg'"/>
-          <div>{{ tab.title }}</div>
+          <div :style="{'width': tab.titleWidth}">{{ tab.title }}</div>
         </div>  
         <img v-if="index !== tabs.length - 1" src="src/assets/icons/slash.svg" class="slash">
       </li>
@@ -57,26 +57,41 @@ export default {
     list-style: none;
     margin: 0 0 0 20px;
     padding: 0;
-    font-size: $font-size-xl;
     justify-content: center;
+    font-size: $font-size-md;
+
+    @media screen and (min-width: $md) {
+      font-size: $font-size-xl;
+    }
   }
 
   ul.tabs-header .tab-button {
-    padding: 15px 30px;
     border-radius: 10px;
     margin: 0;
     margin-right: 5px;
     cursor: pointer;
     display: flex;
     align-items: center;
+
+    @media screen and (min-width: $md) {
+      padding: 15px 30px;
+    }
   }
 
   .tab-button {
     display: inline-block;
     color: black;
-    padding-left: 20px;
-    padding-right: 20px;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
     border-radius: 10px;
+
+    width: 20vw;
+
+    @media screen and (min-width: $md) {
+      width: 225px;
+      padding-left: 0px;
+      padding-right: 20px;
+    }
   }
   
   .tab-selected .tab-button {
@@ -91,6 +106,10 @@ export default {
     font-weight: 500;
   }
 
+  .tab-button > img {
+    width: 45px;
+  }
+
   .img-right .tab-button {
     flex-direction: row-reverse;
   }
@@ -100,16 +119,16 @@ export default {
     justify-content: flex-end;
   }
 
-  .tab-button {
-    width: 255px;
-  }
-
   .tabs {
     width: 100%;
   }
 
   .slash:not(.md-image) {
-    height: 50px;
     align-self: center;
+    height: 30px;
+
+    @media screen and (min-width: $md) {
+      height: 50px;
+    }
   }
 </style>

@@ -13,7 +13,8 @@ export default {
     },
     imgActive: String,
     img: String,
-    imgPosition: String
+    imgPosition: String,
+    titleWidth: String
   },
   data () {
     return {

@@ -4,10 +4,30 @@
 
 body {
     font-family: 'Montserrat', sans-serif;
+    font-size: 18px;
+
+    @media screen and (min-width: $md) {
+        font-size: 14px;
+    }
+}
+
+html {
+    //forced scroll to prevent layout change
+    overflow-y: scroll;
 }
 
 .container {
-    width: 800px;
     margin: auto;
     padding-bottom: 30px;
+    width: 90vw;
+
+    @media screen and (min-width: $md) {
+        width: 800px;
+    }
+}
+
+.label {
+    color: #696969;
+    font-size: $font-size-sm;
+    text-align: center;
 }
