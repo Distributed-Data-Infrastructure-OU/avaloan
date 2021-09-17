@@ -10,6 +10,9 @@ export default {
       if (this.avaxPrice) {
         return avax * this.avaxPrice;
       }
+    },
+    notify(message) {
+      alert(message);
     }
   },
   computed: {

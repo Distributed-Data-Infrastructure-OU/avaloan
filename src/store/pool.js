@@ -9,7 +9,6 @@ export default {
     totalBorrowed: null,
     depositRate: null,
     borrowingRate: null,
-    available: null,
     history: null,
     depositInterests: null,
     userBorrowed: null,
@@ -32,9 +31,6 @@ export default {
     },
     setBorrowingRate(state, borrowingRate) {
       state.borrowingRate = borrowingRate;
-    },
-    setAvailable(state, available) {
-      state.available = available;
     },
     setHistory(state, history) {
       state.history = history;

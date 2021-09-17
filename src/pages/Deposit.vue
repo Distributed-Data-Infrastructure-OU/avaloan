@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="deposit container">
     <Bar>
       <Value label="Your deposits" 
         :primary="{value: userDeposited, type: 'avax', showIcon: true}" 
@@ -9,17 +9,17 @@
         :primary="{value: depositRate, type: 'percent'}"
         :flexDirection="isMobile ? 'row' : 'column'" />
       <Value label="All deposits" 
-        :primary="{value: totalDeposited, type: 'avax', showIcon: true}" ą
+        :primary="{value: totalDeposited, type: 'avax', showIcon: true}"
         :secondary="{value: toUSD(totalDeposited), type: 'usd'}" 
         :flexDirection="isMobile ? 'row' : 'column'" />
     </Bar>    
     <Block class="block" :bordered="true">
       <Tabs>
         <Tab title="Deposit" imgActive="add-deposit-active" img="add-deposit" imgPosition="left" titleWidth="100px">
-          <CurrencyInput label="Deposit" v-on:submitValue="deposit" :waiting="waitingForDeposit" flexDirection="column" :style="{'width': '490px'}"/>
+          <CurrencyInput label="Deposit" v-on:submitValue="deposit" :waiting="waitingForDeposit" flexDirection="column"/>
         </Tab>
         <Tab title="Withdraw" imgActive="withdraw-deposit-active" img="withdraw-deposit" imgPosition="right" titleWidth="140px">
-          <CurrencyInput label="Withdraw" v-on:submitValue="withdrawValue" :waiting="waitingForDeposit" flexDirection="column" :style="{'width': '490px'}" /> 
+          <CurrencyInput label="Withdraw" v-on:submitValue="withdrawValue" :waiting="waitingForDeposit" flexDirection="column" /> 
         </Tab>
       </Tabs>
     </Block>  
@@ -129,4 +129,13 @@
   font-weight: 500;
 }
 
+</style>
+<style lang="scss">
+@import "~@/styles/variables";
+
+.deposit {
+  .currency-input-wrapper {
+    width: 490px;
+  }
+}
 </style>

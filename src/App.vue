@@ -25,9 +25,11 @@
       Wallet
     },
     async created() {
+      //TODO: optimize async tasks
       await this.initNetwork();
       await this.initPrices();
       await this.initPool();
+      await this.initLoan();
       await this.updatePoolData();
     },
     data() {
@@ -40,6 +42,7 @@
     methods: {
       ...mapActions("network", ["initNetwork"]),
       ...mapActions("pool", ["initPool", "updatePoolData"]),
+      ...mapActions("loan", ["initLoan"]),
       ...mapActions("prices", ["initPrices"])
     }
   }

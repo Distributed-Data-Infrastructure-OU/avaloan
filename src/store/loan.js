@@ -56,7 +56,6 @@ export default {
     },
     async updateAssets({ state, rootState, commit }) {
       const provider = rootState.network.provider;
-      const address = rootState.network.address;
       const loan = state.loan;
     
       const prices = await loan.getAllAssetsPrices();

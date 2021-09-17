@@ -1,5 +1,5 @@
 <template>
-  <div class="currency-input-wrapper" :style="{ 'flex-direction': flexDirection}" :class="small">
+  <div class="currency-input-wrapper" :style="{ 'flex-direction': flexDirection}">
     <div class="input-wrapper" :style="{ 'margin-top': flexDirection == 'column-reverse' ? '40px' : '0'}">
       <input type="number" v-model="value" step='0.01' min="0" max="999999">
       <div class="converted" v-if="value && (value !== 0)">
