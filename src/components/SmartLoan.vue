@@ -3,8 +3,8 @@
     <Bar>
       <div>
         <Value label="Borrowed" 
-          :primary="{value: 4, type: 'avax', showIcon: true}" 
-          :secondary="{value: toUSD(4), type: 'usd'}"
+          :primary="{value: debt, type: 'avax', showIcon: true}" 
+          :secondary="{value: toUSD(debt), type: 'usd'}"
           :flexDirection="isMobile ? 'row' : 'column'" />
           <div class="borrow-buttons">
             <img @click="toggleBorrowBlock" src="src/assets/icons/transfer.svg"/>
@@ -20,8 +20,8 @@
       </div>  
       <div>
         <Value label="Collateral" 
-          :primary="{value: 1, type: 'avax', showIcon: true}"
-          :secondary="{value: toUSD(1), type: 'usd'}" 
+          :primary="{value: collateral, type: 'avax', showIcon: true}"
+          :secondary="{value: toUSD(collateral), type: 'usd'}" 
           :flexDirection="isMobile ? 'row' : 'column'" />
           <div class="fund-buttons">
             <img @click="toggleSolvencyInput" src="src/assets/icons/transfer.svg"/>
@@ -67,13 +67,14 @@
   import SolvencyGauge from "@/components/SolvencyGauge.vue";
   import { VueSvgGauge } from 'vue-svg-gauge'
   import CurrencyInput from "@/components/CurrencyInput.vue";
-  import assets from "@/mock/assets.js";
+  // import assets from "@/mock/assets.js";
+  import { mapState } from "vuex";
 
   export default {
   name: 'SmartLoan',
   data() {
     return {
-      assets: assets,
+      // assets: assets,
       showSolvencyInput: false,
       showBorrowBlock: false,
     }
@@ -93,6 +94,10 @@
     SolvencyGauge
   },
   computed: {
+    ...mapState('loan', ['debt', 'totalValue', 'solvency', 'assets']),
+    collateral() {
+      return this.totalValue - this.debt;
+    }
   },
   methods: {
     toggleSolvencyInput() {

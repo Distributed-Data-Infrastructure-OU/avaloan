@@ -20,7 +20,7 @@
             <td v-if="!isMobile" />
             <td v-if="!isMobile" />
             <td v-if="!isMobile" />
-            <td data-label="Total"><b>$ 123188.92</b></td>
+            <td data-label="Total"><b>{{ toUSD(totalValue) | usd }}</b></td>
           </tr>  
           <tr v-for="asset in assetList" 
             v-bind:key="asset.symbol" 
@@ -28,7 +28,7 @@
             :class="{'clickable': asset.showAddInput || asset.showChart}">
             <td data-label="Asset">
               <div class="token-logo-wrapper">
-                <img :src="asset.imgUrl" class="token-logo"/>
+                <img :src="`https://cdn.redstone.finance/symbols/${asset.symbol.toLowerCase()}.svg`" class="token-logo"/>
               </div>  
               <span class="token-name">{{ asset.name }}</span>
               </td>
@@ -70,6 +70,7 @@
   import SimpleChart from "@/components/SimpleChart.vue";
   import Block from "@/components/Block.vue";
   import CurrencyInput from "@/components/CurrencyInput.vue";
+  import { mapState } from "vuex";
   import redstone from 'redstone-api';
 
 
@@ -92,6 +93,9 @@
         'Share',
         { key: 'actions', label: ''}
       ],
+    },
+    computed: {
+      ...mapState('loan', ['totalValue']),
     },
     data() {
       return {

@@ -7,7 +7,13 @@ export default {
   namespaced: true,
   state: {
     loan: null,
-    assets: null,
+    assets: [
+      {name: "AVAX", symbol: "AVAX", code: "avalanche-2", price: 0, balance: 0, value: 0 , share: 0, native: true},
+      {name: "Bitcoin", symbol: "BTC", code: "bitcoin", price: 0, balance: 0, value: 0 , share: 0},
+      {name: "Ether", symbol: "ETH", code: "ethereum", price: 0, balance: 0, value: 0 , share: 0},
+      {name: "XRP", symbol: "XRP", code: "ripple", price: 0, balance: 0, value: 0 , share: 0},
+      {name: "Link", symbol: "LINK", code: "link", price: 0, balance: 0, value: 0 , share: 0},
+    ],
     isLoanAlreadyCreated: null,
     totalValue: null,
     debt: null,
@@ -61,7 +67,7 @@ export default {
       const prices = await loan.getAllAssetsPrices();
       const balances = await loan.getAllAssetsBalances();
     
-      const assets = [];
+      let assets = state.assets;
 
       prices.forEach(async (price, i) => {
         assets[i] = {};
