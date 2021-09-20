@@ -47,9 +47,9 @@
             <td class="input" v-if="asset.showAddInput" @click.stop>
               <CurrencyInput 
               label="Add" 
-              :secondButton="true" 
+              :hasSecondButton="true" 
               secondLabel="Withdraw" 
-              v-on:submitValue="borrow" 
+              v-on:submitValue="({ value, first }) => changeAssetAmount(asset.symbol, value, first)" 
               flexDirection="row" />
             </td>
             <td class="chart" v-if="(asset.showChart || isMobile) && asset.prices" @click.stop>
@@ -70,7 +70,7 @@
   import SimpleChart from "@/components/SimpleChart.vue";
   import Block from "@/components/Block.vue";
   import CurrencyInput from "@/components/CurrencyInput.vue";
-  import { mapState } from "vuex";
+  import { mapState, mapActions } from "vuex";
   import redstone from 'redstone-api';
 
 
@@ -132,6 +132,7 @@
 
     },
     methods: {
+      ...mapActions('loan', ['invest']),
       toggleChart(asset) {
         asset.showChart = !(asset.showChart === true);
         this.assetList = [...this.assetList]
@@ -169,6 +170,11 @@
         );
 
         return [dataPoints, minValue, maxValue ];
+      },
+      changeAssetAmount(asset, value, add) {
+        if (add) {
+          this.invest({ asset: asset, amount: value})
+        }
       }
     }
   }

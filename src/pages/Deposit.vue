@@ -16,7 +16,7 @@
     <Block class="block" :bordered="true">
       <Tabs>
         <Tab title="Deposit" imgActive="add-deposit-active" img="add-deposit" imgPosition="left" titleWidth="100px">
-          <CurrencyInput label="Deposit" v-on:submitValue="deposit" :waiting="waitingForDeposit" flexDirection="column"/>
+          <CurrencyInput label="Deposit" v-on:submitValue="depositValue" :waiting="waitingForDeposit" flexDirection="column"/>
         </Tab>
         <Tab title="Withdraw" imgActive="withdraw-deposit-active" img="withdraw-deposit" imgPosition="right" titleWidth="140px">
           <CurrencyInput label="Withdraw" v-on:submitValue="withdrawValue" :waiting="waitingForDeposit" flexDirection="column" /> 
@@ -99,7 +99,7 @@
     },
     methods: {
       ...mapActions('pool', ['sendDeposit', 'withdraw']),
-      async deposit(value) {
+      async depositValue(value) {
         await this.sendDeposit({amount: value});
       },
       async withdrawValue(value) {

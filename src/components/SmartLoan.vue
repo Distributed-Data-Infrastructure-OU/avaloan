@@ -32,7 +32,7 @@
       <SolvencyGauge />
       <Tabs>
         <Tab title="Add collateral" imgActive="add-deposit-active" img="add-deposit" imgPosition="left">
-          <CurrencyInput label="Add" v-on:submitValue="deposit" :waiting="waitingForDeposit" flexDirection="column" :style="{'width': '490px'}"/>
+          <CurrencyInput label="Add" v-on:submitValue="fundValue" :waiting="waitingForDeposit" flexDirection="column" :style="{'width': '490px'}"/>
         </Tab>
         <Tab title="Reduce collateral" imgActive="withdraw-deposit-active" img="withdraw-deposit" imgPosition="right">
           <CurrencyInput label="Reduce" v-on:submitValue="withdrawValue" :waiting="waitingForDeposit" flexDirection="column" :style="{'width': '490px'}" /> 
@@ -43,10 +43,10 @@
       <SolvencyGauge />
       <Tabs>
         <Tab title="Borrow" imgActive="add-deposit-active" img="add-deposit" imgPosition="left">
-          <CurrencyInput label="Borrow" v-on:submitValue="deposit" :waiting="waitingForDeposit" flexDirection="column" :style="{'width': '490px'}"/>
+          <CurrencyInput label="Borrow" v-on:submitValue="borrowValue" :waiting="waitingForDeposit" flexDirection="column" :style="{'width': '490px'}"/>
         </Tab>
         <Tab title="Repay" imgActive="withdraw-deposit-active" img="withdraw-deposit" imgPosition="right">
-          <CurrencyInput label="Repay" v-on:submitValue="withdrawValue" :waiting="waitingForDeposit" flexDirection="column" :style="{'width': '490px'}" /> 
+          <CurrencyInput label="Repay" v-on:submitValue="repayValue" :waiting="waitingForDeposit" flexDirection="column" :style="{'width': '490px'}" /> 
         </Tab>
       </Tabs>
     </Block>  
@@ -67,14 +67,12 @@
   import SolvencyGauge from "@/components/SolvencyGauge.vue";
   import { VueSvgGauge } from 'vue-svg-gauge'
   import CurrencyInput from "@/components/CurrencyInput.vue";
-  // import assets from "@/mock/assets.js";
-  import { mapState } from "vuex";
+  import { mapState, mapActions } from "vuex";
 
   export default {
   name: 'SmartLoan',
   data() {
     return {
-      // assets: assets,
       showSolvencyInput: false,
       showBorrowBlock: false,
     }
@@ -100,6 +98,7 @@
     }
   },
   methods: {
+    ...mapActions('loan', ['fund', 'withdraw', 'borrow', 'repay']),
     toggleSolvencyInput() {
       this.showBorrowBlock = false;
       this.showSolvencyInput = !this.showSolvencyInput;
@@ -107,7 +106,19 @@
     toggleBorrowBlock() {
       this.showSolvencyInput = false;
       this.showBorrowBlock = !this.showBorrowBlock;
-    }
+    },
+    async fundValue(value) {
+      await this.fund({amount: value});
+    },
+    async withdrawValue(value) {
+      await this.withdraw({amount: value});
+    },
+    async borrowValue(value) {
+      await this.borrow({amount: value});
+    },
+    async repayValue(value) {
+      await this.repay({amount: value});
+    },
   }
 }
 </script>

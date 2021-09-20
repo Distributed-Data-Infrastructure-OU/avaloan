@@ -152,6 +152,18 @@ export default {
       console.log(receipt);
 
       dispatch('updateLoanStats');
+    },
+    async invest({ state, rootState, dispatch }, { asset, amount }) {
+      const provider = rootState.network.provider;
+      const loan = state.loan;
+    
+      let tx = await loan.invest(ethers.utils.formatBytes32String(asset), toWei(amount.toString()), {gasLimit: 3000000});
+      console.log("Invested: " + tx.hash);
+      let receipt = await provider.waitForTransaction(tx.hash);
+      console.log(receipt);
+
+      dispatch('updateLoanStats');
+      dispatch('updateAssets');
     }
   }
 }

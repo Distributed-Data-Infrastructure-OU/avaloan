@@ -7,14 +7,14 @@
       </div>
       <img src="src/assets/icons/avax-logo.svg"/>
     </div>
-    <button class="btn" :class="[waiting ? 'waiting' : '', color]" @click="emitValue" 
+    <button class="btn" :class="[waiting ? 'waiting' : '', color]" @click="emitValue(true)" 
       :style="{ 'margin-top': flexDirection == 'column' ? '40px' : '0'}">
       <div v-if="!waiting">
         {{label}}
       </div>
       <vue-loaders-ball-beat v-else color="#FFFFFF" scale="0.5"></vue-loaders-ball-beat>
     </button>
-    <button v-if="secondButton" class="btn" :class="[waiting ? 'waiting' : '', color]" @click="emitSecondValue" 
+    <button v-if="hasSecondButton" class="btn" :class="[waiting ? 'waiting' : '', color]" @click="emitValue(false)" 
       :style="{ 'margin-top': flexDirection == 'column' ? '40px' : '0'}">
       <div v-if="!waiting">
         {{secondLabel}}
@@ -30,7 +30,7 @@
     name: 'CurrencyInput',
     props: {
       label: { type: String, default: '' },
-      secondButton: { type: Boolean, default: false },
+      hasSecondButton: { type: Boolean, default: false },
       secondLabel: { type: String, default: '' },
       color: { type: String, default: 'purple' },
       flexDirection: { type: String, default: 'column'},
@@ -42,10 +42,15 @@
       }
     },
     methods: {
-      emitValue() {
+      emitValue(isFirstButton) {
         if (!this.waiting) {
-          this.$emit('submitValue', this.value);
-          this.value = 0;
+          if (!this.hasSecondButton) {
+            this.$emit('submitValue', this.value);
+            this.value = 0;
+          } else {
+            this.$emit('submitValue', { value: this.value, first: isFirstButton });
+            this.value = 0;
+          }
         }
       }   
     }
